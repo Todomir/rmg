@@ -42,7 +42,7 @@ function DescriptionSkeleton() {
 
 function TitleSkeleton() {
   return (
-    <div className="absolute z-20 bottom-0 m-4 w-full md:w-80 h-10 bg-gray-400 animate-pulse mt-6 rounded" />
+    <div className="absolute z-20 bottom-0 m-4 w-48 md:w-80 h-10 bg-gray-400 animate-pulse mt-6 rounded" />
   )
 }
 
@@ -97,9 +97,9 @@ export default function Meal() {
             className="absolute z-20 bottom-0 flex flex-col-reverse p-4 justify-between w-full"
           >
             <motion.h1
-              layout
+              layout="position"
               layoutId="meal-title"
-              className="font-extrabold text-lg sm:text-3xl text-white"
+              className="font-extrabold text-2xl sm:text-4xl text-white max-w-sm"
             >
               {data.name}
             </motion.h1>
@@ -129,7 +129,7 @@ export default function Meal() {
         <DescriptionSkeleton />
       ) : (
         <motion.p
-          layout
+          layout="position"
           layoutId="meal-description"
           className="text-gray-500 text-sm mt-6"
         >

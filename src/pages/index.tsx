@@ -2,7 +2,7 @@ import { useQueryClient } from 'react-query'
 
 import Meal from '@components/Meal'
 
-import { AnimateSharedLayout, motion } from 'framer-motion'
+import { motion } from 'framer-motion'
 
 export default function Home() {
   const queryClient = useQueryClient()

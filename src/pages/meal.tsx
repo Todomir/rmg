@@ -42,7 +42,7 @@ export default function MealPage() {
       <motion.div
         layout
         layoutId="meal-container"
-        className="w-full px-6 bg-yellow-100"
+        className="w-full px-6 bg-yellow-50"
       >
         <motion.header
           layout
@@ -103,54 +103,68 @@ export default function MealPage() {
             <motion.h1
               layout
               layoutId="meal-title"
-              className="font-extrabold text-3xl sm:text-5xl text-white"
+              className="font-extrabold text-4xl sm:text-5xl text-white mx-auto"
             >
               {meal.name}
             </motion.h1>
           </motion.div>
         </motion.header>
-        <motion.p
-          layout
-          layoutId="meal-description"
-          className="text-gray-900 text-sm sm:text-lg my-14 max-w-5xl"
-        >
-          {meal.description}
-        </motion.p>
-
-        <motion.section
-          layout
-          variants={container}
-          initial="closed"
-          animate="open"
-          exit="closed"
-          className="mt-8 flex flex-col"
-        >
-          <motion.h3 layout variants={item} className="text-3xl font-bold mb-6">
-            Ingredients
-          </motion.h3>
-
-          {meal.ingredients.map(ingredient => (
+        <motion.section className="flex flex-col items-center">
+          <motion.div className="max-w-5xl mb-4">
             <motion.p
-              variants={item}
-              className="text-lg text-gray-900 bg-gray-50 max-w-5xl py-8 px-6 shadow"
-              key={Math.round(Math.random() * 10000)}
+              layout
+              layoutId="meal-description"
+              className="text-gray-900 text-base sm:text-lg my-14"
             >
-              {ingredient}
+              {meal.description}
             </motion.p>
-          ))}
 
-          <motion.div layout variants={container} className="pt-5 space-y-4">
-            {meal.instructions.map((instruction, index) => (
-              <motion.div
+            <motion.section
+              layout
+              variants={container}
+              initial="closed"
+              animate="open"
+              exit="closed"
+              className="mt-8 flex flex-col"
+            >
+              <motion.h3
                 layout
                 variants={item}
-                className="text-lg bg-gray-50 max-w-5xl py-10 px-8 rounded-md shadow"
-                key={Math.round(Math.random() * 10000)}
+                className="text-3xl sm:text-4xl font-extrabold mb-6"
               >
-                <h4 className="text-3xl font-bold mb-4">Step {index + 1}</h4>
-                {instruction}
+                Ingredients
+              </motion.h3>
+
+              {meal.ingredients.map(ingredient => (
+                <motion.p
+                  variants={item}
+                  className="text-base sm:text-lg text-gray-900 bg-gray-50 max-w-5xl py-8 px-6 shadow"
+                  key={Math.round(Math.random() * 10000)}
+                >
+                  {ingredient}
+                </motion.p>
+              ))}
+
+              <motion.div
+                layout
+                variants={container}
+                className="pt-5 space-y-4"
+              >
+                {meal.instructions.map((instruction, index) => (
+                  <motion.div
+                    layout
+                    variants={item}
+                    className="text-base sm:text-lg bg-gray-50 max-w-5xl py-10 px-8 rounded-md shadow"
+                    key={Math.round(Math.random() * 10000)}
+                  >
+                    <h4 className="text-2xl sm:text-3xl font-bold mb-4">
+                      Step {index + 1}
+                    </h4>
+                    {instruction}
+                  </motion.div>
+                ))}
               </motion.div>
-            ))}
+            </motion.section>
           </motion.div>
         </motion.section>
       </motion.div>

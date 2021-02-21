@@ -1,7 +1,6 @@
-import { useState } from 'react'
-import { useQuery } from 'react-query'
+import { useRouter } from 'next/dist/client/router'
 
-import AspectRatio from '@components/AspectRatio'
+import { useQuery } from 'react-query'
 
 import { AnimatePresence, motion } from 'framer-motion'
 
@@ -30,10 +29,6 @@ const foodEmojis = [
   '🥟'
 ]
 
-function ImageSkeleton() {
-  return <div className="w-full h-full bg-gray-400 animate-pulse" />
-}
-
 function DescriptionSkeleton() {
   return (
     <>
@@ -52,6 +47,8 @@ function TitleSkeleton() {
 }
 
 export default function Meal() {
+  const router = useRouter()
+
   const { isLoading, isFetching, data } = useQuery(
     'meals',
     async () => {
@@ -65,55 +62,43 @@ export default function Meal() {
     { refetchOnWindowFocus: false }
   )
 
-  const [open, setOpen] = useState<boolean>(false)
-
-  const container = {
-    closed: {
-      opacity: 0,
-      x: -20,
-      transition: {
-        staggerChildren: 0.035,
-        staggerDirection: -1,
-        when: 'afterChildren'
-      }
-    },
-    open: {
-      opacity: 1,
-      x: 0,
-      transition: {
-        staggerChildren: 0.033,
-        staggerDirection: 1,
-        when: 'beforeChildren'
-      }
-    }
-  }
-
-  const item = {
-    closed: { opacity: 0, x: -10 },
-    open: { opacity: 1, x: 0 }
+  const setSelectedMeal = () => {
+    if (isLoading || isFetching || !data) return
+    localStorage.setItem('meal', JSON.stringify(data))
+    router.push('/meal')
   }
 
   return (
     <motion.div
       layout
+      layoutId="meal-container"
       className="w-full bg-gray-50 pb-9 px-6 mt-8 rounded-md border border-gray-200 cursor-pointer"
-      onClick={() => setOpen(!open)}
+      onClick={() => setSelectedMeal()}
     >
-      <motion.header layout className="relative -mx-6 shadow-lg">
-        <motion.div
-          layout
-          className="w-full h-full absolute inset-0 bg-gradient-to-t from-gray-800 opacity-60 z-10"
-        />
+      <motion.header
+        layout
+        layoutId="meal-header"
+        className="relative h-60 -mx-6 shadow-lg rounded-t-md"
+        style={{
+          backgroundImage: `url("${data?.image_url}")`,
+          backgroundSize: 'cover',
+          backgroundPosition: 'center center',
+          backgroundRepeat: 'no-repeat'
+        }}
+      >
+        <motion.div className="w-full h-full absolute inset-0 bg-gradient-to-t from-gray-800 opacity-60 z-10" />
 
         {isLoading ? (
           <TitleSkeleton />
         ) : (
           <motion.div
             layout
+            layoutId="meal-title-container"
             className="absolute z-20 bottom-0 flex flex-col-reverse p-4 justify-between w-full"
           >
             <motion.h1
               layout
+              layoutId="meal-title"
               className="font-extrabold text-lg sm:text-3xl text-white"
             >
               {data.name}
@@ -138,69 +123,19 @@ export default function Meal() {
             </AnimatePresence>
           </motion.div>
         )}
-        <AspectRatio ratio={16 / 9}>
-          {isLoading ? (
-            <ImageSkeleton />
-          ) : (
-            <motion.img
-              layout
-              className="w-full h-full object-cover object-center rounded-t-md"
-              src={data.image_url}
-              alt={`Picture of ${data.name}`}
-            />
-          )}
-        </AspectRatio>
       </motion.header>
 
       {isLoading ? (
         <DescriptionSkeleton />
       ) : (
-        <motion.p layout className="text-gray-500 text-sm mt-6">
+        <motion.p
+          layout
+          layoutId="meal-description"
+          className="text-gray-500 text-sm mt-6"
+        >
           {data.description}
         </motion.p>
       )}
-
-      <AnimatePresence>
-        {open && (
-          <motion.section
-            layout
-            variants={container}
-            initial="closed"
-            animate={open ? 'open' : 'closed'}
-            exit="closed"
-            className="mt-8 flex flex-col space-y-2"
-          >
-            <motion.h3 layout variants={item} className="text-xl font-bold">
-              Ingredients
-            </motion.h3>
-
-            {data?.ingredients.map(ingredient => (
-              <motion.p
-                layout
-                variants={item}
-                className="text-sm text-gray-500"
-                key={Math.round(Math.random() * 10000)}
-              >
-                {ingredient}
-              </motion.p>
-            ))}
-
-            <motion.div layout variants={container} className="pt-5 space-y-2">
-              {data?.instructions.map((instruction, index) => (
-                <motion.div
-                  layout
-                  variants={item}
-                  className="text-sm bg-gray-100 border border-gray-300 py-2 px-3 rounded-md"
-                  key={Math.round(Math.random() * 10000)}
-                >
-                  <h4 className="text-lg font-bold">Step {index + 1}</h4>
-                  {instruction}
-                </motion.div>
-              ))}
-            </motion.div>
-          </motion.section>
-        )}
-      </AnimatePresence>
     </motion.div>
   )
 }

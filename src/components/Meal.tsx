@@ -59,7 +59,7 @@ export default function Meal() {
         throw new Error(error.message)
       }
     },
-    { refetchOnWindowFocus: false }
+    { refetchOnWindowFocus: false, refetchOnMount: false }
   )
 
   const setSelectedMeal = () => {

@@ -1,5 +1,7 @@
 import { ReactElement, ReactNode, ReactNodeArray } from 'react'
 
+import { motion } from 'framer-motion'
+
 interface IAspectRatio {
   ratio: number
   children: ReactElement | ReactNode | ReactNodeArray
@@ -12,11 +14,14 @@ export default function AspectRatio({
   className
 }: IAspectRatio) {
   return (
-    <div
+    <motion.div
+      layout
       style={{ paddingBottom: `${(1 / ratio) * 100}%` }}
       className={`relative w-full ${className || ''}`}
     >
-      <div className="absolute inset-0">{children}</div>
-    </div>
+      <motion.div layout className="absolute inset-0">
+        {children}
+      </motion.div>
+    </motion.div>
   )
 }

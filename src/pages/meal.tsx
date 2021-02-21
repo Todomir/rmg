@@ -103,7 +103,7 @@ export default function MealPage() {
             <motion.h1
               layout
               layoutId="meal-title"
-              className="font-extrabold text-4xl sm:text-5xl text-white mx-auto"
+              className="font-extrabold text-4xl sm:text-5xl text-white md:mx-auto"
             >
               {meal.name}
             </motion.h1>

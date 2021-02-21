@@ -42,7 +42,7 @@ function DescriptionSkeleton() {
 
 function TitleSkeleton() {
   return (
-    <div className="absolute z-20 bottom-0 m-4 w-80 h-10 bg-gray-400 animate-pulse mt-6 rounded" />
+    <div className="absolute z-20 bottom-0 m-4 w-full md:w-80 h-10 bg-gray-400 animate-pulse mt-6 rounded" />
   )
 }
 
